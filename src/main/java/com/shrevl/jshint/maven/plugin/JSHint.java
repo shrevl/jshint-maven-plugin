@@ -16,8 +16,8 @@ public class JSHint
 	private final Context context;
 	private final ScriptableObject global;
 
-	private static final String DEFAULT_JS_HINT_PATH = "com/shrevl/jshint/jshint.js";
-	private static final String JS_HINT_SCRIPT_PATH = "com/shrevl/jshint/jshint-script.js";
+	private static final String DEFAULT_JS_HINT_PATH = "/com/shrevl/jshint/jshint.js";
+	private static final String JS_HINT_SCRIPT_PATH = "/com/shrevl/jshint/jshint-script.js";
 
 	public JSHint() throws IOException
 	{
@@ -93,7 +93,7 @@ public class JSHint
 	{
 		JSHint jsHint = new JSHint();
 		List<JSFile> files = new ArrayList<JSFile>();
-		files.add(JSFile.getResource("com/shrevl/jshint/test.js"));
+		files.add(JSFile.getResource("/com/shrevl/jshint/test.js"));
 		jsHint.run(files);
 	}
 }

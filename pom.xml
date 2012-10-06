@@ -7,7 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
-	<name>jshint-maven-plugin Maven Plugin</name>
+	<name>jshint-maven-plugin</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -40,7 +40,7 @@
 				<artifactId>maven-plugin-plugin</artifactId>
 				<version>2.5.1</version>
 				<configuration>
-					<goalPrefix>jshint-maven-plugin</goalPrefix>
+					<goalPrefix>jshint</goalPrefix>
 				</configuration>
 				<executions>
 					<execution>

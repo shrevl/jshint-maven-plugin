@@ -4,7 +4,6 @@ import java.io.InputStream;
 
 public class ResourceJSFile extends JSFile
 {
-
 	public ResourceJSFile(String path)
 	{
 		super(path);
@@ -13,6 +12,6 @@ public class ResourceJSFile extends JSFile
 	@Override
 	protected InputStream getInputStream()
 	{
-		return ClassLoader.getSystemResourceAsStream(getPath());
+		return this.getClass().getResourceAsStream(getPath());
 	}
 }
