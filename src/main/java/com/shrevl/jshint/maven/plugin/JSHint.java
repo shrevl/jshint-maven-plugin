@@ -35,17 +35,21 @@ public class JSHint
 		global.defineFunctionProperties(new String[] { "print" }, JSHint.class, ScriptableObject.DONTENUM);
 	}
 
-	public void run() throws Exception
+	public void run(List<JSFile> files) throws Exception
 	{
 		JSFile jshintScript = JSFile.getResource(JS_HINT_SCRIPT_PATH);
-		JSFile jsFile = JSFile.getResource("com/shrevl/jshint/test.js");
 
-		global.defineProperty("source", jsFile.getSource(), ScriptableObject.DONTENUM);
+		global.defineProperty("source", "", ScriptableObject.DONTENUM);
 		global.defineProperty("errors", context.newArray(global, 0), ScriptableObject.DONTENUM);
 
-		global.put("errors", global, context.newArray(global, 0));
-		context.evaluateReader(global, jshintScript.getReader(), jshintScript.getPath(), 0, null);
-		List<Error> errors = getErrors();
+		for (JSFile file : files)
+		{
+			global.put("errors", global, context.newArray(global, 0));
+			global.put("source", global, file.getSource());
+			context.evaluateReader(global, jshintScript.getReader(), jshintScript.getPath(), 0, null);
+			List<Error> errors = getErrors();
+			System.out.println(errors.size());
+		}
 	}
 
 	private List<Error> getErrors()
@@ -88,6 +92,8 @@ public class JSHint
 	public static void main(String... args) throws Exception
 	{
 		JSHint jsHint = new JSHint();
-		jsHint.run();
+		List<JSFile> files = new ArrayList<JSFile>();
+		files.add(JSFile.getResource("com/shrevl/jshint/test.js"));
+		jsHint.run(files);
 	}
 }
