@@ -11,14 +11,16 @@ import org.mozilla.javascript.ScriptableObject;
 
 import com.shrevl.jshint.maven.plugin.js.JSFile;
 
-public class JSHint {
+public class JSHint
+{
 	private final Context context;
 	private final ScriptableObject global;
 
 	private static final String DEFAULT_JS_HINT_PATH = "com/shrevl/jshint/jshint.js";
 	private static final String JS_HINT_SCRIPT_PATH = "com/shrevl/jshint/jshint-script.js";
 
-	public JSHint() throws IOException {
+	public JSHint() throws IOException
+	{
 		context = Context.enter();
 		context.setLanguageVersion(Context.VERSION_1_6);
 		global = context.initStandardObjects();
@@ -28,11 +30,13 @@ public class JSHint {
 		context.evaluateReader(global, jshint.getReader(), jshint.getPath(), 0, null);
 	}
 
-	private void defineFunctions() {
+	private void defineFunctions()
+	{
 		global.defineFunctionProperties(new String[] { "print" }, JSHint.class, ScriptableObject.DONTENUM);
 	}
 
-	public void run() throws Exception {
+	public void run() throws Exception
+	{
 		JSFile jshintScript = JSFile.getResource(JS_HINT_SCRIPT_PATH);
 		JSFile jsFile = JSFile.getResource("com/shrevl/jshint/test.js");
 
@@ -44,12 +48,14 @@ public class JSHint {
 		List<Error> errors = getErrors();
 	}
 
-	private List<Error> getErrors() {
+	private List<Error> getErrors()
+	{
 		List<Error> errs = new ArrayList<Error>();
 		Scriptable errors = (Scriptable) global.get("errors", global);
 		int numErrors = ((Number) errors.get("length", global)).intValue();
 
-		for (int i = 0; i < numErrors; i++) {
+		for (int i = 0; i < numErrors; i++)
+		{
 			Error error = map((Scriptable) errors.get(i, global));
 			errs.add(error);
 		}
@@ -57,7 +63,8 @@ public class JSHint {
 		return errs;
 	}
 
-	private Error map(Scriptable error) {
+	private Error map(Scriptable error)
+	{
 		Error err = new Error();
 		err.setLine(((Number) error.get("line", global)).intValue());
 		err.setCharacter(((Number) error.get("character", global)).intValue());
@@ -66,9 +73,11 @@ public class JSHint {
 		return err;
 	}
 
-	public static void print(Context context, Scriptable object, Object[] args, Function function) {
+	public static void print(Context context, Scriptable object, Object[] args, Function function)
+	{
 		String delim = "";
-		for (Object arg : args) {
+		for (Object arg : args)
+		{
 			System.out.println(delim);
 			System.out.println(Context.toString(arg));
 			delim = " ";
@@ -76,7 +85,8 @@ public class JSHint {
 		System.out.println();
 	}
 
-	public static void main(String... args) throws Exception {
+	public static void main(String... args) throws Exception
+	{
 		JSHint jsHint = new JSHint();
 		jsHint.run();
 	}

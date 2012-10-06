@@ -7,35 +7,41 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 
-
-public abstract class JSFile {
+public abstract class JSFile
+{
 	private final String path;
 
-	public JSFile(String path) {
+	public JSFile(String path)
+	{
 		this.path = path;
 	}
-	
-	public static JSFile getResource(String path) {
+
+	public static JSFile getResource(String path)
+	{
 		return new ResourceJSFile(path);
 	}
-	
-	public String getPath() {
+
+	public String getPath()
+	{
 		return path;
 	}
-	
+
 	protected abstract InputStream getInputStream();
-	
-	public Reader getReader() {
+
+	public Reader getReader()
+	{
 		return new InputStreamReader(getInputStream());
 	}
-	
-	public String getSource() throws IOException {
+
+	public String getSource() throws IOException
+	{
 		Reader reader = getReader();
 		BufferedReader br = new BufferedReader(reader);
 		StringWriter sw = new StringWriter();
 		char[] buffer = new char[1024];
 		int read = 0;
-		while((read = br.read(buffer)) >= 0) {
+		while ((read = br.read(buffer)) >= 0)
+		{
 			sw.write(buffer, 0, read);
 		}
 		return sw.toString();
