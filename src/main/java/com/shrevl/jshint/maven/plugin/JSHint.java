@@ -2,7 +2,9 @@ package com.shrevl.jshint.maven.plugin;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
@@ -28,6 +30,9 @@ public class JSHint
 		defineFunctions();
 		JSFile jshint = JSFile.getResource(DEFAULT_JS_HINT_PATH);
 		context.evaluateReader(global, jshint.getReader(), jshint.getPath(), 0, null);
+		
+		global.defineProperty("source", "", ScriptableObject.DONTENUM);
+		global.defineProperty("errors", context.newArray(global, 0), ScriptableObject.DONTENUM);
 	}
 
 	private void defineFunctions()
@@ -35,21 +40,20 @@ public class JSHint
 		global.defineFunctionProperties(new String[] { "print" }, JSHint.class, ScriptableObject.DONTENUM);
 	}
 
-	public void run(List<JSFile> files) throws Exception
+	public Map<JSFile, List<Error>> run(List<JSFile> files) throws Exception
 	{
+		Map<JSFile, List<Error>> errors = new HashMap<JSFile, List<Error>>();
 		JSFile jshintScript = JSFile.getResource(JS_HINT_SCRIPT_PATH);
-
-		global.defineProperty("source", "", ScriptableObject.DONTENUM);
-		global.defineProperty("errors", context.newArray(global, 0), ScriptableObject.DONTENUM);
 
 		for (JSFile file : files)
 		{
 			global.put("errors", global, context.newArray(global, 0));
 			global.put("source", global, file.getSource());
 			context.evaluateReader(global, jshintScript.getReader(), jshintScript.getPath(), 0, null);
-			List<Error> errors = getErrors();
-			System.out.println(errors.size());
+			errors.put(file,  getErrors());
 		}
+		
+		return errors;
 	}
 
 	private List<Error> getErrors()

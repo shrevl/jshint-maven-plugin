@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -12,7 +13,10 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
+import com.shrevl.jshint.maven.plugin.Error;
+import com.shrevl.jshint.maven.plugin.ErrorWriter;
 import com.shrevl.jshint.maven.plugin.JSHint;
+import com.shrevl.jshint.maven.plugin.JSHintErrorWriter;
 import com.shrevl.jshint.maven.plugin.js.JSFile;
 
 /**
@@ -28,11 +32,19 @@ public class JSHintGoal extends AbstractMojo
 	 * @parameter expression="${jshint.jsSourceDirectory}" default-value="${basedir}/src/main/webapp/js"
 	 */
 	private String jsSourceDirectory;
+	
+	/**
+	 * The path of the output file.
+	 * 
+	 * @parameter expression="${jshint.outputFile}" default-value="${project.build.directory}/jslint.xml"
+	 */
+	private String outputFile;
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{		
 		System.out.println(jsSourceDirectory);
+		System.out.println(outputFile);
 		File sourceDirectory = new File(jsSourceDirectory);
 		
 		IOFileFilter fileFilter = FileFilterUtils.and(FileFilterUtils.suffixFileFilter(".js"), FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(".min.js")));
@@ -48,7 +60,9 @@ public class JSHintGoal extends AbstractMojo
 				jsFiles.add(JSFile.getFile(file.getAbsolutePath()));
 			}
 			
-			jsHint.run(jsFiles);
+			Map<JSFile, List<Error>> errors = jsHint.run(jsFiles);
+			ErrorWriter writer = new JSHintErrorWriter();
+			writer.write(errors, outputFile);
 		}
 		catch (Exception e)
 		{
