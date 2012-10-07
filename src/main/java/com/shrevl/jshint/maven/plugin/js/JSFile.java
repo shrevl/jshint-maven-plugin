@@ -21,14 +21,19 @@ public abstract class JSFile
 		return new ResourceJSFile(path);
 	}
 
+	public static JSFile getFile(String path)
+	{
+		return new FileJSFile(path);
+	}
+
 	public String getPath()
 	{
 		return path;
 	}
 
-	protected abstract InputStream getInputStream();
+	protected abstract InputStream getInputStream() throws IOException;
 
-	public Reader getReader()
+	public Reader getReader() throws IOException
 	{
 		return new InputStreamReader(getInputStream());
 	}

@@ -88,12 +88,4 @@ public class JSHint
 		}
 		System.out.println();
 	}
-
-	public static void main(String... args) throws Exception
-	{
-		JSHint jsHint = new JSHint();
-		List<JSFile> files = new ArrayList<JSFile>();
-		files.add(JSFile.getResource("/com/shrevl/jshint/test.js"));
-		jsHint.run(files);
-	}
 }
