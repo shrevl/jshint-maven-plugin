@@ -32,7 +32,7 @@ public class JSHintGoal extends AbstractMojo
 	 * @parameter expression="${jshint.jsSourceDirectory}" default-value="${basedir}/src/main/webapp/js"
 	 */
 	private String jsSourceDirectory;
-	
+
 	/**
 	 * The path of the output file.
 	 * 
@@ -40,27 +40,37 @@ public class JSHintGoal extends AbstractMojo
 	 */
 	private String outputFile;
 
+	/**
+	 * @parameter
+	 */
+	private Map<String, String> options;
+	
+	/**
+	 * @parameter
+	 */
+	private Map<String, String> globals;
+	
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
-	{		
-		System.out.println(jsSourceDirectory);
-		System.out.println(outputFile);
+	{
 		File sourceDirectory = new File(jsSourceDirectory);
-		
-		IOFileFilter fileFilter = FileFilterUtils.and(FileFilterUtils.suffixFileFilter(".js"), FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(".min.js")));
-		
+
+		IOFileFilter fileFilter = FileFilterUtils.and(FileFilterUtils.suffixFileFilter(".js"), FileFilterUtils.notFileFilter(FileFilterUtils
+				.suffixFileFilter(".min.js")));
+
 		Collection<File> files = FileUtils.listFiles(sourceDirectory, fileFilter, FileFilterUtils.directoryFileFilter());
-		
+
 		try
 		{
 			JSHint jsHint = new JSHint();
-			
+
 			List<JSFile> jsFiles = new ArrayList<JSFile>();
-			for(File file: files) {
+			for (File file : files)
+			{
 				jsFiles.add(JSFile.getFile(file.getAbsolutePath()));
 			}
-			
-			Map<JSFile, List<Error>> errors = jsHint.run(jsFiles);
+
+			Map<JSFile, List<Error>> errors = jsHint.run(jsFiles, options, globals);
 			ErrorWriter writer = new JSHintErrorWriter();
 			writer.write(errors, outputFile);
 		}

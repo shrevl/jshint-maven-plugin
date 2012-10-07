@@ -30,9 +30,11 @@ public class JSHint
 		defineFunctions();
 		JSFile jshint = JSFile.getResource(DEFAULT_JS_HINT_PATH);
 		context.evaluateReader(global, jshint.getReader(), jshint.getPath(), 0, null);
-		
+
 		global.defineProperty("source", "", ScriptableObject.DONTENUM);
 		global.defineProperty("errors", context.newArray(global, 0), ScriptableObject.DONTENUM);
+		global.defineProperty("options", context.newObject(global), ScriptableObject.DONTENUM);
+		global.defineProperty("globals", context.newObject(global), ScriptableObject.DONTENUM);
 	}
 
 	private void defineFunctions()
@@ -40,20 +42,40 @@ public class JSHint
 		global.defineFunctionProperties(new String[] { "print" }, JSHint.class, ScriptableObject.DONTENUM);
 	}
 
-	public Map<JSFile, List<Error>> run(List<JSFile> files) throws Exception
+	public Map<JSFile, List<Error>> run(List<JSFile> files, Map<String, String> options, Map<String, String> globals) throws Exception
 	{
 		Map<JSFile, List<Error>> errors = new HashMap<JSFile, List<Error>>();
 		JSFile jshintScript = JSFile.getResource(JS_HINT_SCRIPT_PATH);
+
+		global.put("options", global, convert(options));
+		global.put("globals", global, convert(globals));
 
 		for (JSFile file : files)
 		{
 			global.put("errors", global, context.newArray(global, 0));
 			global.put("source", global, file.getSource());
 			context.evaluateReader(global, jshintScript.getReader(), jshintScript.getPath(), 0, null);
-			errors.put(file,  getErrors());
+			errors.put(file, getErrors());
 		}
-		
+
 		return errors;
+	}
+
+	private ScriptableObject convert(Map<String, String> properties)
+	{
+		ScriptableObject scriptable = (ScriptableObject) context.newObject(global);
+
+		if (properties == null)
+		{
+			return scriptable;
+		}
+
+		for (String key : properties.keySet())
+		{
+			String value = properties.get(key);
+			scriptable.put(key, scriptable, value);
+		}
+		return scriptable;
 	}
 
 	private List<Error> getErrors()
@@ -76,8 +98,8 @@ public class JSHint
 		Error err = new Error();
 		err.setLine(((Number) error.get("line", global)).intValue());
 		err.setCharacter(((Number) error.get("character", global)).intValue());
-		err.setReason((String) error.get("reason", global));
-		err.setEvidence(((String) error.get("evidence", global)).trim());
+		err.setReason(error.get("reason", global).toString());
+		err.setEvidence(error.get("evidence", global).toString().trim());
 		return err;
 	}
 
