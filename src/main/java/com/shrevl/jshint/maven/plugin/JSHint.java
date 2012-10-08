@@ -42,7 +42,8 @@ public class JSHint
 		global.defineFunctionProperties(new String[] { "print" }, JSHint.class, ScriptableObject.DONTENUM);
 	}
 
-	public Map<JSFile, List<Error>> run(List<JSFile> files, Map<String, String> options, Map<String, String> globals) throws Exception
+	public Map<JSFile, List<Error>> run(List<JSFile> files, Map<String, String> options, Map<String, String> globals)
+			throws Exception
 	{
 		Map<JSFile, List<Error>> errors = new HashMap<JSFile, List<Error>>();
 		JSFile jshintScript = JSFile.getResource(JS_HINT_SCRIPT_PATH);

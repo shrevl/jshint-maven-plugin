@@ -19,18 +19,21 @@ import com.shrevl.jshint.maven.plugin.js.JSFile;
 public class JSHintErrorWriter implements ErrorWriter
 {
 	@Override
-	public void write(Map<JSFile, List<Error>> errors, String outputFile) {
+	public void write(Map<JSFile, List<Error>> errors, String outputFile)
+	{
 		ObjectFactory factory = new ObjectFactory();
 		Jslint jslint = factory.createJslint();
 		List<File> files = jslint.getFile();
-		for(JSFile jsFile: errors.keySet()) {
+		for (JSFile jsFile : errors.keySet())
+		{
 			File file = factory.createFile();
 			file.setName(jsFile.getPath());
 			files.add(file);
-			
+
 			List<Issue> issues = file.getIssue();
 			List<Error> jsErrors = errors.get(jsFile);
-			for(Error error: jsErrors) {
+			for (Error error : jsErrors)
+			{
 				Issue issue = factory.createIssue();
 				issue.setChar(error.getCharacter());
 				issue.setEvidence(error.getEvidence());
@@ -39,14 +42,14 @@ public class JSHintErrorWriter implements ErrorWriter
 				issues.add(issue);
 			}
 		}
-		
+
 		try
 		{
 			JAXBContext context = JAXBContext.newInstance(Jslint.class);
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			java.io.File file = new java.io.File(outputFile);
-			if(!file.exists())
+			if (!file.exists())
 			{
 				file.createNewFile();
 			}

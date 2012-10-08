@@ -44,21 +44,22 @@ public class JSHintGoal extends AbstractMojo
 	 * @parameter
 	 */
 	private Map<String, String> options;
-	
+
 	/**
 	 * @parameter
 	 */
 	private Map<String, String> globals;
-	
+
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
 		File sourceDirectory = new File(jsSourceDirectory);
 
-		IOFileFilter fileFilter = FileFilterUtils.and(FileFilterUtils.suffixFileFilter(".js"), FileFilterUtils.notFileFilter(FileFilterUtils
-				.suffixFileFilter(".min.js")));
+		IOFileFilter fileFilter = FileFilterUtils.and(FileFilterUtils.suffixFileFilter(".js"), FileFilterUtils
+				.notFileFilter(FileFilterUtils.suffixFileFilter(".min.js")));
 
-		Collection<File> files = FileUtils.listFiles(sourceDirectory, fileFilter, FileFilterUtils.directoryFileFilter());
+		Collection<File> files = FileUtils
+				.listFiles(sourceDirectory, fileFilter, FileFilterUtils.directoryFileFilter());
 
 		try
 		{
