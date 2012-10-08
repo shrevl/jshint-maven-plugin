@@ -18,14 +18,13 @@ import org.apache.maven.plugins.annotations.Parameter;
 import com.shrevl.jshint.maven.plugin.Error;
 import com.shrevl.jshint.maven.plugin.ErrorWriter;
 import com.shrevl.jshint.maven.plugin.JSHint;
-import com.shrevl.jshint.maven.plugin.JSHintErrorWriter;
-import com.shrevl.jshint.maven.plugin.OutputFormat;
+import com.shrevl.jshint.maven.plugin.format.OutputFormat;
 import com.shrevl.jshint.maven.plugin.js.JSFile;
 
 /**
  * Runs JSHint.
  */
-@Mojo(name="jshint")
+@Mojo(name = "jshint")
 public class JSHintMojo extends AbstractMojo
 {
 	/**
@@ -57,10 +56,11 @@ public class JSHintMojo extends AbstractMojo
 	{
 		File sourceDirectory = new File(jsSourceDirectory);
 
-		if(!sourceDirectory.exists()) {
+		if (!sourceDirectory.exists())
+		{
 			return;
 		}
-		
+
 		IOFileFilter fileFilter = FileFilterUtils.and(FileFilterUtils.suffixFileFilter(".js"), FileFilterUtils
 				.notFileFilter(FileFilterUtils.suffixFileFilter(".min.js")));
 
@@ -78,7 +78,7 @@ public class JSHintMojo extends AbstractMojo
 			}
 
 			Map<JSFile, List<Error>> errors = jsHint.run(jsFiles, options, globals);
-			ErrorWriter writer = new JSHintErrorWriter();
+			ErrorWriter writer = new ErrorWriter();
 			writer.write(errors, outputFormat, outputFile);
 		}
 		catch (Exception e)

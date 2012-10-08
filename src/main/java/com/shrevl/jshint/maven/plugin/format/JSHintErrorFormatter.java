@@ -1,8 +1,9 @@
-package com.shrevl.jshint.maven.plugin;
+package com.shrevl.jshint.maven.plugin.format;
 
 import java.util.List;
 import java.util.Map;
 
+import com.shrevl.jshint.maven.plugin.Error;
 import com.shrevl.jshint.maven.plugin.jaxb.jshint.File;
 import com.shrevl.jshint.maven.plugin.jaxb.jshint.Issue;
 import com.shrevl.jshint.maven.plugin.jaxb.jshint.Jshint;

@@ -1,4 +1,5 @@
-package com.shrevl.jshint.maven.plugin;
+package com.shrevl.jshint.maven.plugin.format;
+
 
 public class ErrorFormatterFactory
 {
