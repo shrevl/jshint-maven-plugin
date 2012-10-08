@@ -10,42 +10,20 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import com.shrevl.jshint.maven.plugin.jaxb.jslint.File;
-import com.shrevl.jshint.maven.plugin.jaxb.jslint.Issue;
-import com.shrevl.jshint.maven.plugin.jaxb.jslint.Jslint;
-import com.shrevl.jshint.maven.plugin.jaxb.jslint.ObjectFactory;
 import com.shrevl.jshint.maven.plugin.js.JSFile;
 
 public class JSHintErrorWriter implements ErrorWriter
 {
 	@Override
-	public void write(Map<JSFile, List<Error>> errors, String outputFile)
+	public void write(Map<JSFile, List<Error>> errors, OutputFormat format, String outputFile)
 	{
-		ObjectFactory factory = new ObjectFactory();
-		Jslint jslint = factory.createJslint();
-		List<File> files = jslint.getFile();
-		for (JSFile jsFile : errors.keySet())
-		{
-			File file = factory.createFile();
-			file.setName(jsFile.getPath());
-			files.add(file);
-
-			List<Issue> issues = file.getIssue();
-			List<Error> jsErrors = errors.get(jsFile);
-			for (Error error : jsErrors)
-			{
-				Issue issue = factory.createIssue();
-				issue.setChar(error.getCharacter());
-				issue.setEvidence(error.getEvidence());
-				issue.setLine(error.getLine());
-				issue.setReason(error.getReason());
-				issues.add(issue);
-			}
-		}
+		ErrorFormatterFactory factory = new ErrorFormatterFactory();
+		ErrorFormatter<?> formatter = factory.getErrorFormatter(format);
+		Object output = formatter.format(errors);
 
 		try
 		{
-			JAXBContext context = JAXBContext.newInstance(Jslint.class);
+			JAXBContext context = JAXBContext.newInstance(output.getClass());
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			java.io.File file = new java.io.File(outputFile);
@@ -53,7 +31,7 @@ public class JSHintErrorWriter implements ErrorWriter
 			{
 				file.createNewFile();
 			}
-			marshaller.marshal(jslint, new FileOutputStream(file));
+			marshaller.marshal(output, new FileOutputStream(file));
 		}
 		catch (JAXBException e)
 		{

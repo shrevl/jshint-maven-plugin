@@ -12,42 +12,44 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 import com.shrevl.jshint.maven.plugin.Error;
 import com.shrevl.jshint.maven.plugin.ErrorWriter;
 import com.shrevl.jshint.maven.plugin.JSHint;
 import com.shrevl.jshint.maven.plugin.JSHintErrorWriter;
+import com.shrevl.jshint.maven.plugin.OutputFormat;
 import com.shrevl.jshint.maven.plugin.js.JSFile;
 
 /**
  * Runs JSHint.
- * 
- * @goal jshint
  */
-public class JSHintGoal extends AbstractMojo
+@Mojo(name="jshint")
+public class JSHintMojo extends AbstractMojo
 {
 	/**
 	 * The source path to search.
-	 * 
-	 * @parameter expression="${jshint.jsSourceDirectory}" default-value="${basedir}/src/main/webapp/js"
 	 */
+	@Parameter(property = "jshint.jsSourceDirectory", defaultValue = "${basedir}/src/main/webapp/js")
 	private String jsSourceDirectory;
 
 	/**
 	 * The path of the output file.
-	 * 
-	 * @parameter expression="${jshint.outputFile}" default-value="${project.build.directory}/jslint.xml"
 	 */
+	@Parameter(property = "jshint.outputFile", defaultValue = "${project.build.directory}/jslint.xml")
 	private String outputFile;
 
 	/**
-	 * @parameter
+	 * The format of the output.
 	 */
+	@Parameter(property = "jshint.outputFormat", defaultValue = "jslint")
+	private OutputFormat outputFormat;
+
+	@Parameter()
 	private Map<String, String> options;
 
-	/**
-	 * @parameter
-	 */
+	@Parameter()
 	private Map<String, String> globals;
 
 	@Override
@@ -55,6 +57,10 @@ public class JSHintGoal extends AbstractMojo
 	{
 		File sourceDirectory = new File(jsSourceDirectory);
 
+		if(!sourceDirectory.exists()) {
+			return;
+		}
+		
 		IOFileFilter fileFilter = FileFilterUtils.and(FileFilterUtils.suffixFileFilter(".js"), FileFilterUtils
 				.notFileFilter(FileFilterUtils.suffixFileFilter(".min.js")));
 
@@ -73,7 +79,7 @@ public class JSHintGoal extends AbstractMojo
 
 			Map<JSFile, List<Error>> errors = jsHint.run(jsFiles, options, globals);
 			ErrorWriter writer = new JSHintErrorWriter();
-			writer.write(errors, outputFile);
+			writer.write(errors, outputFormat, outputFile);
 		}
 		catch (Exception e)
 		{

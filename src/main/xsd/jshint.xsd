@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="jslint">
+  <xs:element name="jshint">
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="file" minOccurs="0" maxOccurs="unbounded"></xs:element>
