@@ -86,4 +86,18 @@ public class JSHintMojo extends AbstractMojo
 			throw new MojoExecutionException("Failed to execute goal: jshint", e);
 		}
 	}
+
+	public void setJsSourceDirectory(String jsSourceDirectory)
+	{
+		this.jsSourceDirectory = jsSourceDirectory;
+	}
+
+	public void setOutputFile(String outputFile)
+	{
+		this.outputFile = outputFile;
+	}
+	
+	public void setOutputFormat(OutputFormat outputFormat) {
+		this.outputFormat = outputFormat;
+	}
 }

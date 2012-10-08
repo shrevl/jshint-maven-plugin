@@ -18,8 +18,8 @@ public class JSHint
 	private final Context context;
 	private final ScriptableObject global;
 
-	private static final String DEFAULT_JS_HINT_PATH = "/com/shrevl/jshint/jshint.js";
-	private static final String JS_HINT_SCRIPT_PATH = "/com/shrevl/jshint/jshint-script.js";
+	private static final String DEFAULT_JS_HINT_PATH = "/com/shrevl/jshint/maven/plugin/jshint.js";
+	private static final String JS_HINT_SCRIPT_PATH = "/com/shrevl/jshint/maven/plugin/jshint-script.js";
 
 	public JSHint() throws IOException
 	{
