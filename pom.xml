@@ -175,6 +175,9 @@
 								<goals>
 									<goal>sign</goal>
 								</goals>
+								<configuration>
+									<passphrase></passphrase>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
