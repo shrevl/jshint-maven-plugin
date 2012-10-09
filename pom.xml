@@ -8,7 +8,30 @@
 	<packaging>maven-plugin</packaging>
 
 	<name>jshint-maven-plugin</name>
+	<description>A maven plugin for running JSHint.</description>
 	<url>http://maven.apache.org</url>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License</name>
+			<url>http://www.gnu.org/licenses/gpl.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git@github.com:shrevl/jshint-maven-plugin.git</connection>
+		<url>scm:git:git@github.com:shrevl/jshint-maven-plugin.git</url>
+		<developerConnection>scm:git:git@github.com:shrevl/jshint-maven-plugin.git</developerConnection>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>shrevl</id>
+			<name>Lee Shreve</name>
+			<email>shrevl@gmail.com</email>
+		</developer>
+	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -134,7 +157,7 @@
 		<snapshotRepository>
 			<id>shrevl-snapshot</id>
 			<name>shrevl.com Snapshot Repository</name>
-			<url>http://nexus.shrevl.com/content/repositories/snapshots/</url>
+			<url>http://nexus.shrevl.com/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
 </project>
