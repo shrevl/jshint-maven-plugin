@@ -29,11 +29,18 @@ public class ErrorWriter
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			java.io.File file = new java.io.File(outputFile);
-			if (!file.exists())
+			if (file.exists() || file.createNewFile())
 			{
-				file.createNewFile();
+				FileOutputStream fos = new FileOutputStream(file);
+				try
+				{
+					marshaller.marshal(output, fos);
+				}
+				finally
+				{
+					fos.close();
+				}
 			}
-			marshaller.marshal(output, new FileOutputStream(file));
 		}
 		catch (JAXBException e)
 		{
