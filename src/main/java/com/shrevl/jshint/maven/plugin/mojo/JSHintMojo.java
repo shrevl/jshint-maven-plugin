@@ -36,13 +36,13 @@ public class JSHintMojo extends AbstractMojo
 	/**
 	 * The path of the output file.
 	 */
-	@Parameter(property = "jshint.outputFile", defaultValue = "${project.build.directory}/jslint.xml")
+	@Parameter(property = "jshint.outputFile", defaultValue = "${project.build.directory}/jshint.xml")
 	private String outputFile;
 
 	/**
 	 * The format of the output.
 	 */
-	@Parameter(property = "jshint.outputFormat", defaultValue = "jslint")
+	@Parameter(property = "jshint.outputFormat", defaultValue = "jshint")
 	private OutputFormat outputFormat;
 
 	@Parameter()
