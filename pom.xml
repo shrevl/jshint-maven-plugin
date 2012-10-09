@@ -105,6 +105,9 @@
 						<goals>
 							<goal>helpmojo</goal>
 						</goals>
+						<configuration>
+						  <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound> 
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
