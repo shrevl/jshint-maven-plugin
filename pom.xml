@@ -152,12 +152,4 @@
       </plugin>
 		</plugins>
 	</build>
-	
-	<distributionManagement>
-		<snapshotRepository>
-			<id>shrevl-snapshot</id>
-			<name>shrevl.com Snapshot Repository</name>
-			<url>http://nexus.shrevl.com/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
 </project>
