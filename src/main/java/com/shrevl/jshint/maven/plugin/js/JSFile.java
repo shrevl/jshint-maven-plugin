@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 
 public abstract class JSFile
 {
@@ -35,7 +36,7 @@ public abstract class JSFile
 
 	public Reader getReader() throws IOException
 	{
-		return new InputStreamReader(getInputStream());
+		return new InputStreamReader(getInputStream(), Charset.forName("UTF-8"));
 	}
 
 	public String getSource() throws IOException
@@ -49,6 +50,7 @@ public abstract class JSFile
 		{
 			sw.write(buffer, 0, read);
 		}
+		br.close();
 		return sw.toString();
 	}
 }

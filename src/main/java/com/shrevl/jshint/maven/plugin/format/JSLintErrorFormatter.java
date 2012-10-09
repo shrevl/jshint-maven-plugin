@@ -18,14 +18,16 @@ public class JSLintErrorFormatter implements ErrorFormatter<Jslint>
 		ObjectFactory factory = new ObjectFactory();
 		Jslint jslint = factory.createJslint();
 		List<File> files = jslint.getFile();
-		for (JSFile jsFile : errors.keySet())
+		for (Map.Entry<JSFile,List<Error>> entry: errors.entrySet())
 		{
+			JSFile jsFile = entry.getKey();
+			List<Error> jsErrors = entry.getValue();
+			
 			File file = factory.createFile();
 			file.setName(jsFile.getPath());
 			files.add(file);
 
 			List<Issue> issues = file.getIssue();
-			List<Error> jsErrors = errors.get(jsFile);
 			for (Error error : jsErrors)
 			{
 				Issue issue = factory.createIssue();
