@@ -71,10 +71,9 @@ public class JSHint
 			return scriptable;
 		}
 
-		for (String key : properties.keySet())
+		for (Map.Entry<String, String> entry: properties.entrySet())
 		{
-			String value = properties.get(key);
-			scriptable.put(key, scriptable, value);
+			scriptable.put(entry.getKey(), scriptable, entry.getValue());
 		}
 		return scriptable;
 	}
