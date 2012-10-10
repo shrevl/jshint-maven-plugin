@@ -4,7 +4,7 @@
 
 	<groupId>com.shrevl</groupId>
 	<artifactId>jshint-maven-plugin</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>jshint-maven-plugin</name>
@@ -175,9 +175,6 @@
 								<goals>
 									<goal>sign</goal>
 								</goals>
-								<configuration>
-									<passphrase></passphrase>
-								</configuration>
 							</execution>
 						</executions>
 					</plugin>
