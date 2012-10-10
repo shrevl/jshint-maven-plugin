@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="jshint">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="file" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="file">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="issue" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+	<xs:element name="issue">
+		<xs:complexType>
+			<xs:attribute name="line" type="xs:int"></xs:attribute>
+			<xs:attribute name="char" type="xs:int"></xs:attribute>
+			<xs:attribute name="reason" type="xs:string"></xs:attribute>
+			<xs:attribute name="evidence" type="xs:string"></xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

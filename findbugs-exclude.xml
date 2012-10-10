@@ -1,0 +1,5 @@
+<FindBugsFilter>
+	<Match>
+		<Class name="com.shrevl.jshint.maven.plugin.mojo.HelpMojo" />
+	</Match>
+</FindBugsFilter>
