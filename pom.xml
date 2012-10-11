@@ -3,7 +3,7 @@
 
 	<groupId>com.shrevl</groupId>
 	<artifactId>jshint-maven-plugin</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>jshint-maven-plugin</name>
