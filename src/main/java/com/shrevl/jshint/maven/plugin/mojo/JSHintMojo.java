@@ -12,8 +12,6 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
 
 import com.shrevl.jshint.maven.plugin.Error;
 import com.shrevl.jshint.maven.plugin.ErrorWriter;
@@ -23,32 +21,44 @@ import com.shrevl.jshint.maven.plugin.js.JSFile;
 
 /**
  * Runs JSHint.
+ * 
+ * @goal jshint
  */
-@Mojo(name = "jshint")
 public class JSHintMojo extends AbstractMojo
 {
 	/**
 	 * The source path to search.
+	 * 
+	 * @parameter property="jshint.jsSourceDirectory" default-value="${basedir}/src/main/webapp/js"
 	 */
-	@Parameter(property = "jshint.jsSourceDirectory", defaultValue = "${basedir}/src/main/webapp/js")
 	private String jsSourceDirectory;
 
 	/**
 	 * The path of the output file.
+	 * 
+	 * @parameter property="jshint.outputFile" default-value="${project.build.directory}/jshint.xml"
 	 */
-	@Parameter(property = "jshint.outputFile", defaultValue = "${project.build.directory}/jshint.xml")
 	private String outputFile;
 
 	/**
 	 * The format of the output.
+	 * 
+	 * @parameter property="jshint.outputFormat" default-value="jshint"
 	 */
-	@Parameter(property = "jshint.outputFormat", defaultValue = "jshint")
 	private OutputFormat outputFormat;
 
-	@Parameter()
+	/**
+	 * Options to be sent to JSHint.
+	 * 
+	 * @parameter
+	 */
 	private Map<String, String> options;
 
-	@Parameter()
+	/**
+	 * Globals to be declared to JSHint.
+	 * 
+	 * @parameter
+	 */
 	private Map<String, String> globals;
 
 	@Override
@@ -96,8 +106,9 @@ public class JSHintMojo extends AbstractMojo
 	{
 		this.outputFile = outputFile;
 	}
-	
-	public void setOutputFormat(OutputFormat outputFormat) {
+
+	public void setOutputFormat(OutputFormat outputFormat)
+	{
 		this.outputFormat = outputFormat;
 	}
 }
