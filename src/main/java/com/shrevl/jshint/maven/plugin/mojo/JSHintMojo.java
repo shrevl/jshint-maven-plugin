@@ -34,6 +34,13 @@ public class JSHintMojo extends AbstractMojo
 	private String jsSourceDirectory;
 
 	/**
+	 * The source path to search.
+	 * 
+	 * @parameter property="jshint.failOnError" default-value="false"
+	 */
+	private String failOnError;
+
+	/**
 	 * The path of the output file.
 	 * 
 	 * @parameter property="jshint.outputFile" default-value="${project.build.directory}/jshint.xml"
@@ -88,8 +95,25 @@ public class JSHintMojo extends AbstractMojo
 			}
 
 			Map<JSFile, List<Error>> errors = jsHint.run(jsFiles, options, globals);
+			
+			for (JSFile jsFile : errors.keySet()) {
+				getLog().error(String.format("There are jshint errors in '%s' for more details see '%s'", jsFile.getPath(), outputFile));
+				if (getLog().isDebugEnabled()) {
+					
+					for (Error error : errors.get(jsFile)) {
+						getLog().error(String.format("Jshint error '%s'", error));
+					}
+					
+				}
+			}
+
 			ErrorWriter writer = new ErrorWriter();
 			writer.write(errors, outputFormat, outputFile);
+
+			if (!errors.isEmpty() & "true".equals(failOnError)) {
+				throw new MojoExecutionException("There are jshint errors!");
+			}
+
 		}
 		catch (Exception e)
 		{
@@ -111,4 +135,10 @@ public class JSHintMojo extends AbstractMojo
 	{
 		this.outputFormat = outputFormat;
 	}
+
+	public void setFailOnError(String failOnError) 
+	{
+		this.failOnError = failOnError;
+	}
+	
 }
