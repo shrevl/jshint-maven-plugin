@@ -88,6 +88,18 @@ public class JSHintMojo extends AbstractMojo
 			}
 
 			Map<JSFile, List<Error>> errors = jsHint.run(jsFiles, options, globals);
+			
+			for (JSFile jsFile : errors.keySet()) {
+				getLog().error(String.format("There are jshint errors in '%s' for more details see '%s'", jsFile.getPath(), outputFile));
+				if (getLog().isDebugEnabled()) {
+					
+					for (Error error : errors.get(jsFile)) {
+						getLog().error(String.format("Jshint error '%s'", error));
+					}
+					
+				}
+			}
+
 			ErrorWriter writer = new ErrorWriter();
 			writer.write(errors, outputFormat, outputFile);
 		}
